@@ -84,6 +84,17 @@ useEffect(()=>{
   },[quill,socket,id])
 
 
+  useEffect(() => {
+    if (socket === null || quill === null) return;
+
+    const interval = setInterval(() => {
+      socket.emit('save-document', quill.getContents())
+    }, 2000);
+
+    return () => {
+      clearInterval(interval);
+    }
+  }, [socket, quill]);
   return (
     <Box sx={{bgcolor:"#f5f5f5"}} >
       <Box className="container" id="container"></Box>
